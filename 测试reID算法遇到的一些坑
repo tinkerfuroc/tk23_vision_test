@@ -1,0 +1,5 @@
+1.在测试时，需将命令中“--which_epoch 59"改为"--which_epoch 60"，因为在train.py里事实上存的文件名是epoch+1(见原代码418行）
+2.在训练时，可能会出现半天没响应的情况，经过排查发现是因为fig.add_subplot造成了程序的阻塞，可以将绘图部分注释掉（见原代码450行）
+3.与linux不同，windows似乎不支持多进程工作，所以需要把加载数据和训练模型的代码都放在主函数里
+4.此方法依赖pytorch，而pytorch和cuda的版本匹配似乎是经典大坑，可以通过在cmd中使用python，import torch后查看torch.cuda.is_available()查看二者是否匹配，若为False首先确认torch使用的是GPU版本（torch.__version__，若结果含'+cuxxx'则说明是GPU版本），可以通过nvcc -V指令查看cuda版本，若不匹配则上官网重新安装https://pytorch.org/get-started/locally/#no-cuda-1）
+5.在输入数据集的测试路径时，默认是对应名字（如Market）文件夹下的/pytorch/子目录（见train.py原始代码第46行）
